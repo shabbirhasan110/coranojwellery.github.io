@@ -1,0 +1,156 @@
+{% extends 'base.html' %}
+{% load static %}
+
+
+{% block title %}
+Cart |
+{% endblock title %}
+
+
+
+{% block body %}
+<div class="breadcrumb-area">
+    <div class="container">
+        <div class="row">
+            <div class="col-12">
+                <div class="breadcrumb-wrap">
+                    <nav aria-label="breadcrumb">
+                        <ul class="breadcrumb">
+                            <li class="breadcrumb-item"><a href="{% url 'shop' %}"><i class="fa fa-home"></i></a></li>
+                            
+                            <li class="breadcrumb-item active" aria-current="page">Your Cart</li>
+                        </ul>
+                    </nav>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+<div class="cart-main-wrapper section-padding">
+    <div class="container">
+        <div class="section-bg-color">
+            <div class="row">
+                <div class="col-lg-12">
+                    <!-- Cart Table Area -->
+                    <div class="cart-table table-responsive">
+                        <table class="table table-bordered">
+                            <thead>
+                                <tr>
+                                    <th class="pro-thumbnail">Thumbnail</th>
+                                    <th class="pro-title">Product</th>
+                                    <th class="pro-price">Price</th>
+                                    <th class="pro-quantity">Quantity</th>
+                                    <th class="pro-quantity">Size</th>
+                                    <th class="pro-subtotal">Total</th>
+                                    <th class="pro-remove">Remove</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {% for cartproduct in cart_data %}
+
+
+
+                                <tr>
+                                    <td class="pro-thumbnail">
+                                        <a href="#">
+                                            <img class="img-fluid" src="{{cartproduct.product.photo.url}}"
+                                                alt="Product">
+                                        </a>
+                                    </td>
+                                    <td class="pro-title"><a href="#">{{cartproduct.product.name}}</a></td>
+                                    <td class="pro-price"><span>₹ {{cartproduct.product.sell_price}}</span></td>
+                                    <td class="pro-quantity">
+                                        <div class="row border p-2">
+                                            <div class="col-3">
+                                                <form action="{% url 'minusequa' cartproduct.id %}" method="POST">
+                                                    {% csrf_token %}
+                                                    <button type="submit" class="btn" data-toggle="tooltip"
+                                                        data-placement="top" title="Decrease  Quantity">
+                                                        <i class="fa fa-minus-circle"></i>
+                                                    </button>
+                                                </form>
+                                            </div>
+                                            <div class="col-3 ml-1">
+                                                {{cartproduct.quantity}}
+                                            </div>
+                                            <div class="col-3">
+                                                <form action="{% url 'plusqua' cartproduct.id %}" method="POST">
+                                                    {% csrf_token %}
+                                                    <input type="hidden" name="plusquantity" value="{{cartproduct.id}}">
+                                                    <button type="submit" class="btn" data-toggle="tooltip"
+                                                        data-placement="top" title="Increase Quantity">
+                                                        <i class="fa fa-plus-circle"></i>
+                                                    </button>
+                                                </form>
+                                            </div>
+                                        </div>
+                                    </td>
+                                    <td class="pro-subtotal"><span>{{cartproduct.size}}</span></td>
+                                    <td class="pro-subtotal"><span>₹ {{cartproduct.product_total}}</span></td>
+                                    <td class="pro-remove">
+                                        <a href="{% url 'removeitem' cartproduct.id %}" data-toggle="tooltip"
+                                            data-placement="top" title="Remove Item">
+                                            <i class="fa fa-trash-o"></i>
+                                        </a>
+                                    </td>
+                                    {% empty %}
+                                    <td colspan="7">
+                                        <strong class="text-muted">Your Cart is Empty</strong>
+                                        <img style="height: 5rem;" src="{% static 'assets/img/emptycart.gif' %}"><br>
+                                        <a href="{% url 'shop' %}" class="btn btn-sqr mt-2">Shop Now</a>
+                                    </td>
+                                </tr>
+                                {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
+
+                    <!-- Clear Cart -->
+                    <div class="cart-update-option">
+                        <div class="paginatoin-area text-right">
+                            <a id="clrcart" href="{% url 'clearcart' %}" class="btn btn-sqr" data-toggle="tooltip" data-placement="top" title="Clear Cart"><i class="fa fa-trash"></i> Clear Cart</a>
+                            <a  href="{% url 'shop' %}" class="btn btn-sqr" data-toggle="tooltip" data-placement="top" title="Clear Cart"> Go to Shop</a>
+                        </div>
+                    </div> 
+                    
+                </div>
+            </div>
+            
+            {% if proamount != 0 and final_amt != 0 %}
+            <div class="row">
+                <div class="col-lg-5 ml-auto">
+                    <!-- Cart Calculation Area -->
+                    <div class="cart-calculator-wrapper">
+                        <div class="cart-calculate-items">
+                            <h6>Cart Totals</h6>
+                            <div class="table-responsive">
+                                <table class="table">
+                                    <tbody>
+                                        <tr>
+                                            <td>Sub Total</td>
+                                            <td>₹ {{proamount}}</td>
+                                        </tr>
+                                        <tr>
+                                            <td>Shipping</td>
+                                            <td>₹ 70</td>
+                                        </tr>
+                                        <tr class="total">
+                                            <td>Total</td>
+                                            <td class="total-amount">₹ {{final_amt}}</td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                        <a href="{% url 'checkout' %}" class="btn btn-sqr d-block">Proceed Checkout</a>
+                    </div>
+                </div>
+            </div>
+            {% endif %}
+        </div>
+    </div>
+</div>
+{% endblock body %}

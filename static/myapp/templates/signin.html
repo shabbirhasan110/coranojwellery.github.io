@@ -1,0 +1,104 @@
+{% extends 'base.html' %}
+{% load static %}
+
+
+{% block title %}
+Signin |
+{% endblock title %}
+
+
+
+{% block body %}
+<main>
+    {% if user.is_authenticated %}
+    <!-- breadcrumb area start -->
+    <div class="breadcrumb-area">
+        <div class="container">
+            <div class="row">
+                <div class="col-12">
+                    <div class="breadcrumb-wrap">
+                        <nav aria-label="breadcrumb">
+                            <ul class="breadcrumb">
+                                <li class="breadcrumb-item"><a href="index.html"><i class="fa fa-home"></i></a></li>
+                                <li class="breadcrumb-item active" aria-current="page">login-Register</li>
+                            </ul>
+                        </nav>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- breadcrumb area end -->
+    {% endif %}
+    <!-- login register wrapper start -->
+    <div class="login-register-wrapper section-padding">
+        <div class="container">
+            <div class="member-area-from-wrap">
+                <div class="row ">
+                    <!-- Login Content Start -->
+                    <div class="col-lg-5 mx-auto">
+                        <div class="login-reg-form-wrap">
+                            <h5>Sign In</h5>
+                            <!-- Message Display -->
+                            <div class="row mt-1">
+                                <div class="col">
+                                    {% if messages %}
+                                    {% for message in messages %}
+                                    <div class="alert alert-{{message.tags}} alert-dismissible fade show" role="alert">
+                                        <strong>{{message}}</strong>
+                                        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                                            <span aria-hidden="true">&times;</span>
+                                        </button>
+                                    </div>
+                                    {% endfor %}
+                                    {% endif %}
+                                </div>
+                            </div>
+
+                            <form action="#" method="POST" novalidate>
+                                {% csrf_token %}
+                                <div class="single-input-item">
+                                    <input type="text" name="uname" placeholder="Enter your Username" required="">
+                                </div>
+                                <div class="single-input-item">
+                                    <input type="password" name="upass" placeholder="Enter your Password" required="">
+                                </div>
+                                <div class="single-input-item">
+                                    <a  href="{% url 'password_reset' %}" class="forget-pwd">Forget Password?</a>
+                                </div>
+                                <div class="single-input-item">
+                                    <button class="btn btn-block btn-sqr">Login</button>
+                                </div>
+                                <div class="row">
+                                    <div class="col">
+                                        <div class="single-input-item">
+                                            <a id="fb" href="{% url 'social:begin' 'facebook' %}"
+                                                class="btn btn-block btn-sqr"><i class="fa fa-facebook fa-lg mr-2"></i>
+                                                Facebook Login</a>
+                                        </div>
+                                    </div>
+                                    <div class="col">
+                                        <div class="single-input-item">
+                                            <a id="googlebtn" href="{% url 'social:begin' 'google-oauth2' %}"
+                                                class="btn btn-block btn-sqr"><i class="fa fa-google fa-lg mr-2"></i>
+                                                Google Login</a>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="single-input-item text-center">
+                                    If not user ? <a href="{% url 'signup' %}" class="forget-pwd"
+                                        style="font-size: 0.8rem;">Signup</a>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                    <!-- Login Content End -->
+
+
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- login register wrapper end -->
+</main>
+{% endblock body %}

@@ -1,0 +1,233 @@
+{% extends 'base.html' %}
+{% load static %}
+
+
+{% block title %}
+Checkout |
+{% endblock title %}
+
+
+{% block body %}
+
+
+<main>
+    <!-- breadcrumb area start -->
+    <div class="breadcrumb-area">
+        <div class="container">
+            <div class="row">
+                <div class="col-12">
+                    <div class="breadcrumb-wrap">
+                        <nav aria-label="breadcrumb">
+                            <ul class="breadcrumb">
+                                <li class="breadcrumb-item"><a href="{% url 'shop' %}"><i class="fa fa-home"></i></a>
+                                </li>
+                                <li class="breadcrumb-item active" aria-current="page">checkout</li>
+                            </ul>
+                        </nav>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- breadcrumb area end -->
+
+    <!-- checkout main wrapper start -->
+    <div class="checkout-page-wrapper section-padding">
+        <div class="container">
+
+            <div class="row">
+
+                <!-- Order Summary Details -->
+                <div class="col-lg-7">
+                    <div class="order-summary-details">
+                        <h5 class="checkout-title">Your Order Summary</h5>
+                        <div class="order-summary-content">
+                            <!-- Order Summary Table -->
+                            <div class="order-summary-table table-responsive text-center">
+                                <table class="table table-bordered">
+                                    <thead>
+                                        <tr>
+                                            <td><strong>Products</strong></td>
+                                            <td><strong>Total</strong></td>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+
+                                        {% for itm in cart_data %}
+                                        <tr>
+                                            <td>{{itm.product.name}} ({{itm.product.sell_price}} ×
+                                                {{itm.quantity}})</a>
+                                            </td>
+                                            <td>₹ {{itm.product_total}}</td>
+                                        </tr>
+                                        {% endfor %}
+                                    </tbody>
+                                    <tfoot>
+                                        <tr>
+                                            <td>Sub Total</td>
+                                            <td><strong>₹ {{proamount}}</strong></td>
+                                        </tr>
+                                        <tr>
+                                            <td>Shipping</td>
+                                            <td>
+                                                <label>Rate: ₹ 70.00</label>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td>Total Amount</td>
+                                            <td><strong>₹ {{final_amt}}</strong></td>
+                                        </tr>
+                                    </tfoot>
+                                </table>
+                            </div>
+
+
+                        </div>
+                    </div>
+                </div>
+
+
+
+
+                <!-- Checkout Billing Details -->
+                <div class="col-lg-5">
+                    <div class="checkout-billing-details-wrap">
+                        <h5 class="checkout-title">Billing Details</h5>
+                        <div class="billing-form-wrap">
+                            <div class="minicart-content-box">
+                                <div class="minicart-item-wrapper">
+                                    <form action="{% url 'placeorder' %}" method="POST">
+                                        {% csrf_token %}
+                                        <ul>
+                                            {% for add in customer_data %}
+
+                                            <li class="minicart-item">
+                                                <div class="minicart-thumb">
+
+                                                    <table>
+                                                        <tbody>
+                                                            <tr>
+                                                                <th class="h5" colspan="2">
+                                                                    <div class="single-payment-method show">
+                                                                        <div class="payment-method-name">
+                                                                            <div class="custom-control custom-radio">
+                                                                                <input type="radio" id="{{add.id}}"
+                                                                                    name="address_id" value="{{add.id}}"
+                                                                                    class="custom-control-input"
+                                                                                    required>
+                                                                                <label class="custom-control-label"
+                                                                                    for="{{add.id}}">Address:
+                                                                                    {{forloop.counter}}</label>
+                                                                            </div>
+                                                                        </div>
+                                                                    </div>
+                                                                </th>
+                                                            </tr>
+                                                            <tr>
+                                                                <th>Name:</th>
+                                                                <td>{{add.name}}</td>
+                                                            </tr>
+                                                            <tr>
+                                                                <th>Locality:</th>
+                                                                <td>{{add.locality}}</td>
+                                                            </tr>
+                                                            <tr>
+                                                                <th>City:</th>
+                                                                <td>{{add.city}}</td>
+                                                            </tr>
+                                                            <tr>
+                                                                <th>Zip:</th>
+                                                                <td>{{add.zipcode}}</td>
+                                                            </tr>
+                                                            <tr>
+                                                                <th>State:</th>
+                                                                <td>{{add.state}}</td>
+                                                            </tr>
+
+                                                        </tbody>
+                                                    </table>
+                                                </div>
+
+
+                                            </li>
+                                            {% endfor %}
+                                        </ul>
+                                         
+                                        
+                                        <script src="https://checkout.razorpay.com/v1/checkout.js"
+                                            data-key="rzp_test_uVa0EM0b0faqQj"
+                                            "data-amount="{{amount}}"
+                                            data-currency="INR" data-order_id="{{payment.id}}"
+                                            data-buttontext="Pay with Razorpay" data-name="Jewellery Shop"
+                                            data-description="Ornaments & more" data-image="https://example.com/your_logo.jpg"
+                                            data-prefill.name="PC" data-prefill.email="Jewellery@mail.com"
+                                            data-theme.color="#F37254">
+                                        </script>
+
+                                        <!-- Order Payment Method -->
+                                        <div class="order-payment-method">
+                                            <div class="single-payment-method show">
+                                                <div class="payment-method-name">
+                                                    <div class="custom-control custom-radio">
+                                                        <input type="radio" id="cashon" name="paymentmethod" checked=""
+                                                            value="cash" class="custom-control-input">
+                                                        <label class="custom-control-label" for="cashon">Cash On
+                                                            Delivery</label>
+                                                    </div>
+                                                </div>
+                                                <div class="payment-method-details" data-method="cash">
+                                                    <p>Pay with cash upon delivery.</p>
+                                                </div>
+                                            </div>
+                                            <div class="single-payment-method">
+                                                <div class="payment-method-name">
+                                                    <div class="custom-control custom-radio">
+                                                        <input type="radio" id="directbank" name="paymentmethod"
+                                                            value="bank" class="custom-control-input">
+                                                        <label class="custom-control-label" for="directbank">Direct Bank
+                                                            Transfer</label>
+                                                    </div>
+                                                </div>
+                                                <div class="payment-method-details" data-method="bank"
+                                                    style="display: none;">
+                                                    <p>Make your payment directly into our bank account. using <a
+                                                            href="https://razorpay.com/"><strong>razorpay</strong></a>
+                                                        payment
+                                                        gateway it is provided all type payment system </p>
+                                                </div>
+                                                <div class="summary-footer-area">
+                                                    <div class="custom-control custom-checkbox mb-20">
+
+                                                    </div>
+
+                                                    <div class="single-input-item">
+                                                        <a href="{% url 'addview' %}" class="btn btn-block btn-sqr">Add New Address</a>
+                                                    </div>
+                                                    <div class="single-input-item">
+                                                        <button type="submit" class="btn btn-block btn-sqr mt-3">Place Order</button>
+                                                    </div>
+                                                </div>
+
+                                            </div>
+
+                                        </div>
+                                    </form>
+                                </div>
+
+                            </div>
+                        </div>
+
+
+
+                    </div>
+                </div>
+
+
+
+
+            </div>
+        </div>
+    </div>
+    <!-- checkout main wrapper end -->
+</main>
+{% endblock body %}

@@ -1,0 +1,84 @@
+{% extends 'base.html' %}
+{% load static %}
+
+
+{% block title %}
+Profile |
+{% endblock title %}
+
+
+
+{% block body %}
+<main>
+    <!-- breadcrumb area start -->
+    <div class="breadcrumb-area">
+        <div class="container">
+            <div class="row">
+                <div class="col-12">
+                    <div class="breadcrumb-wrap">
+                        <nav aria-label="breadcrumb">
+                            <ul class="breadcrumb">
+                                <li class="breadcrumb-item"><a href="{% url 'shop' %}"><i class="fa fa-home"></i></a></li>
+                                <li class="breadcrumb-item active" aria-current="page">Profile</li>
+                            </ul>
+                        </nav>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- breadcrumb area end -->
+
+    <!-- about us area start -->
+    <section class="about-us section-padding">
+        <div class="container">
+            <div class="row align-items-center">
+                <div class="col-lg-3 border-right">
+                    <div class="about-thumb">
+                        <a class="btn btn-block btn-sqr" href="{% url 'prochange' %}">Profile</a>
+                    </div>
+                    <div class="about-thumb mt-3">
+                        <a class="btn btn-block btn-sqr" href="{% url 'addview' %}">Address</a>
+                    </div>
+                </div>
+                <div class="col-lg-7">
+                    <div class="about-content">
+                        <h2 class="about-title">Profile</h2>
+                        <div>
+                            {% if messages %}
+                            {% for message in messages %}
+                            <div class="alert alert-{{message.tags}} alert-dismissible fade show" role="alert">
+                                <strong>{{message}}</strong>
+                                <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                                    <span aria-hidden="true">&times;</span>
+                                </button>
+                            </div>
+                            {% endfor %}
+                            {% endif %}
+                        </div>
+                        <form method="POST" novalidate>
+                            {% csrf_token %}
+                            {% for fm in form %}
+                            <div class="single-input-item">
+                                {{fm}} {{fm.errors|striptags}}
+                            </div>
+                            {% endfor %}
+
+
+                            <div class="single-input-item">
+                                <button class="btn btn-block btn-sqr">Update Profile</button>
+                            </div>
+
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    <!-- about us area end -->
+
+    
+
+    
+</main>
+{% endblock body %}

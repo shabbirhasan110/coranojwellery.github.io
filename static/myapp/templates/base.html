@@ -1,0 +1,604 @@
+{% load static %}
+<!doctype html>
+<html class="no-js" lang="en">
+
+
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="x-ua-compatible" content="ie=edge">
+    <title>
+
+        {% block title %}
+
+        {% endblock title %}
+
+    </title>
+    <meta name="robots" content="noindex, follow" />
+    <meta name="description" content="">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <!-- Favicon -->
+    <link rel="shortcut icon" type="image/x-icon" href="{% static 'assets/img/favicon.ico' %}">
+
+    <!-- CSS
+	============================================ -->
+    <!-- google fonts -->
+    <link href="https://fonts.googleapis.com/css?family=Lato:300,300i,400,400i,700,900" rel="stylesheet">
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="{% static 'assets/css/vendor/bootstrap.min.css' %}">
+    <!-- Pe-icon-7-stroke CSS -->
+    <link rel="stylesheet" href="{% static 'assets/css/vendor/pe-icon-7-stroke.css' %}">
+    <!-- Font-awesome CSS -->
+    <link rel="stylesheet" href="{% static 'assets/css/vendor/font-awesome.min.css' %}">
+    <!-- Slick slider css -->
+    <link rel="stylesheet" href="{% static 'assets/css/plugins/slick.min.css' %}">
+    <!-- animate css -->
+    <link rel="stylesheet" href="{% static 'assets/css/plugins/animate.css' %}">
+    <!-- Nice Select css -->
+    <link rel="stylesheet" href="{% static 'assets/css/plugins/nice-select.css' %}">
+    <!-- jquery UI css -->
+    <link rel="stylesheet" href="{% static 'assets/css/plugins/jqueryui.min.css' %}">
+    <!-- main style css -->
+    <link rel="stylesheet" href="{% static 'assets/css/style.css' %}">
+    <style>
+        #googlebtn:hover{
+            background-color: #DD4B39;
+        }
+    </style>   
+    <style>
+        #fb:hover{
+            background-color: #4267B2;
+        }
+    </style>   
+    <style>
+        #clrcart:hover{
+            background-color: red;
+        }
+    </style>   
+</head>
+
+<body>
+
+    {% if user.is_authenticated %}
+    <!-- Start Header Area -->
+    <header class="header-area header-wide bg-gray">
+        <!-- main header start -->
+        <div class="main-header d-none d-lg-block">
+            <!-- header middle area start -->
+            <div class="header-main-area sticky">
+                <div class="container">
+                    <div class="row align-items-center position-relative">
+
+                        <!-- start logo area -->
+                        <div class="col-lg-2">
+                            <div class="logo">
+                                <a href="{% url 'shop' %}">
+                                    <img src="{% static 'assets/img/logo/logo.png' %}" alt="brand logo">
+                                </a>
+                            </div>
+                        </div>
+                        <!-- start logo area -->
+
+                        <!-- main menu area start -->
+                        <div class="col-lg-6 position-static">
+                            <div class="main-menu-area">
+                                <div class="main-menu">
+                                    <!-- main menu navbar start -->
+                                    <nav class="desktop-menu">
+                                        <ul>
+                                            <li class="active"><a href="{% url 'shop' %}">shop <i
+                                                        class="fa fa-angle-down"></i></a>
+                                                <ul class="dropdown">
+                                                    <li><a href="{% url 'shop' %}">Home</a></li>
+                                                    <li><a href="{% url 'allproducts' %}">All Products</a></li>
+                                                    <li><a href="{% url 'showcart' %}">My Cart</a></li>
+                                                    <li><a href="{% url 'orders' %}">My Orders</a></li>
+                                                </ul>
+                                            </li>
+
+                                            <li><a href="shop.html">Products <i class="fa fa-angle-down"></i></a>
+                                                <ul class="dropdown">
+                                                    <li>
+                                                        <a href="{% url 'allproducts' %}">All Products</a>
+                                                    </li>
+                                                    <li><a href="#">For Men <i class="fa fa-angle-right"></i></a>
+                                                        <ul class="dropdown">
+                                                            {% for mcat in men_categories %}
+                                                            <li>
+                                                                <a href="{% url 'subcatefilter' mcat %}">{{mcat}}</a>
+                                                            </li>
+                                                            {% endfor %}
+                                                        </ul>
+                                                    </li>
+                                                    <li><a href="#">For Women <i class="fa fa-angle-right"></i></a>
+                                                        <ul class="dropdown">
+                                                            {% for wcat in women_categories %}
+                                                            <li>
+                                                                <a href="{% url 'subcatefilter' wcat %}">{{wcat}}</a>
+                                                            </li>
+                                                            {% endfor %}
+                                                        </ul>
+                                                    </li>
+                                                    <li><a href="#">For Kids <i class="fa fa-angle-right"></i></a>
+                                                        <ul class="dropdown">
+                                                            {% for kcat in kids_categories %}
+                                                            <li>
+                                                                <a href="{% url 'subcatefilter' kcat %}">{{kcat}}</a>
+                                                            </li>
+                                                            {% endfor %}
+                                                        </ul>
+                                                    </li>
+                                                </ul>
+                                            </li>
+
+                                            <li><a href="contact-us.html">Contact us</a></li>
+                                        </ul>
+                                    </nav>
+                                    <!-- main menu navbar end -->
+                                </div>
+                            </div>
+                        </div>
+                        <!-- main menu area end -->
+
+                        <!-- mini cart area start -->
+                        <div class="col-lg-4">
+                            <div
+                                class="header-right d-flex align-items-center justify-content-xl-between justify-content-lg-end">
+                                <div class="header-search-container">
+                                    <button type="submit" class="search-trigger d-xl-none d-lg-block"><i
+                                            class="pe-7s-search"></i></button>
+                                    <form action="{% url 'allproducts' %}" class="header-search-box d-lg-none d-xl-block animated jackInTheBox">
+                                        <input name="byname" type="text" placeholder="Search entire store hire"
+                                            class="header-search-field bg-white">
+                                        <button type="submit" class="header-search-btn"><i class="pe-7s-search"></i></button>
+                                    </form>
+                                </div>
+
+                                <div class="header-configure-area">
+                                    <ul class="nav justify-content-end">
+                                        <li class="user-hover">
+                                            <a href="#">
+                                                <i class="pe-7s-user"></i>
+                                            </a>
+                                            <ul class="dropdown-list">
+                                                <li><strong>Hello,{{request.user|truncatechars:10}}</strong></li>
+                                                <div class="dropdown-divider"></div>
+                                                <li><a href="{% url 'prochange' %}">Profile</a></li>
+                                                <li><a href="{% url 'showcart' %}">My Cart</a></li>
+                                                <li><a href="{% url 'orders' %}">My Orders</a></li>
+                                                <li><a href="{% url 'passchange' %}">Change Password</a></li>
+                                                <li><a href="{% url 'uout' %}">Logout</a></li>
+                                            </ul>
+                                        </li>
+                                        <li>
+                                            <a href="wishlist.html">
+                                                <i class="pe-7s-like"></i>
+                                                <div class="notification">0</div>
+                                            </a>
+                                        </li>
+                                        <li>
+                                            <a href="#" class="minicart-btn">
+                                                <i class="pe-7s-shopbag"></i>
+                                                <div class="notification">{{cart_count}}</div>
+                                            </a>
+                                        </li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                        <!-- mini cart area end -->
+
+                    </div>
+                </div>
+            </div>
+            <!-- header middle area end -->
+        </div>
+        <!-- main header start -->
+
+        <!-- mobile header start -->
+        <!-- mobile header start -->
+        <div class="mobile-header d-lg-none d-md-block sticky">
+            <!--mobile header top start -->
+            <div class="container-fluid">
+                <div class="row align-items-center">
+                    <div class="col-12">
+                        <div class="mobile-main-header">
+                            <div class="mobile-logo">
+                                <a href="{% url 'shop' %}">
+                                    <img src="{% static 'assets/img/logo/logo.png' %}" alt="Brand Logo">
+                                </a>
+                            </div>
+                            <div class="mobile-menu-toggler">
+                                <div class="mini-cart-wrap">
+                                    <a href="{% url 'showcart' %}">
+                                        <i class="pe-7s-shopbag"></i>
+                                        <div class="notification">{{cart_count}}</div>
+                                    </a>
+                                </div>
+                                <button class="mobile-menu-btn">
+                                    <span></span>
+                                    <span></span>
+                                    <span></span>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- mobile header top start -->
+        </div>
+        <!-- mobile header end -->
+        <!-- mobile header end -->
+
+        <!-- offcanvas mobile menu start -->
+        <!-- off-canvas menu start -->
+        <aside class="off-canvas-wrapper">
+            <div class="off-canvas-overlay"></div>
+            <div class="off-canvas-inner-content">
+                <div class="btn-close-off-canvas">
+                    <i class="pe-7s-close"></i>
+                </div>
+
+                <div class="off-canvas-inner">
+                    <!-- search box start -->
+                    <div class="search-box-offcanvas">
+                        
+                        
+                        
+                        <form action="{% url 'allproducts' %}" method="GET">
+                            <input name="byname" type="text" placeholder="Search Here...">
+                            <button type="submit" class="search-btn"><i class="pe-7s-search"></i></button>
+                        </form>
+                            
+                       
+                            
+                    </div>
+                    <!-- search box end -->
+
+                    <!-- mobile menu start -->
+                    <div class="mobile-navigation">
+
+                        <!-- mobile menu navigation start -->
+                        <nav>
+                            <ul class="mobile-menu">
+                                <li class="menu-item-has-children">
+                                    <a href="{% url 'shop' %}">Shop</a>
+                                    <ul class="dropdown">
+                                        <li><a href="{% url 'shop' %}">Home</a></li>
+                                        <li><a href="{% url 'allproducts' %}">All Products</a></li>
+                                        <li><a href="{% url 'showcart' %}">My Cart</a></li>
+                                        <li><a href="{% url 'orders' %}">My Orders</a></li>
+
+                                    </ul>
+                                </li>
+                                <li class="menu-item-has-children">
+                                    <a href="{% url 'shop' %}">For Men</a>
+                                    <ul class="dropdown">
+                                       {% for mcat in men_categories %}
+                                             <li><a href="{% url 'shop' %}">{{mcat}}</a></li>
+                                       {% endfor %}
+                                    </ul>
+                                </li>
+                                <li class="menu-item-has-children">
+                                    <a href="{% url 'shop' %}">For Women</a>
+                                    <ul class="dropdown">
+                                       {% for womcat in women_categories %}
+                                             <li><a href="{% url 'shop' %}">{{womcat}}</a></li>
+                                       {% endfor %}
+                                    </ul>
+                                </li>
+                                <li class="menu-item-has-children">
+                                    <a href="{% url 'shop' %}">For Kids</a>
+                                    <ul class="dropdown">
+                                       {% for kcat in kids_categories %}
+                                             <li><a href="{% url 'shop' %}">{{kcat}}</a></li>
+                                       {% endfor %}
+                                    </ul>
+                                </li>
+
+                                
+                                
+                                <li><a href="contact-us.html">Contact us</a></li>
+                            </ul>
+                        </nav>
+                        <!-- mobile menu navigation end -->
+                    </div>
+                    <!-- mobile menu end -->
+
+                    <div class="mobile-settings">
+                        <ul class="nav">
+
+                            <li>
+                                <div class="dropdown mobile-top-dropdown">
+                                    <a href="#" class="dropdown-toggle" id="myaccount" data-toggle="dropdown"
+                                        aria-haspopup="true" aria-expanded="false">
+                                        My Account
+                                        <i class="fa fa-angle-down"></i>
+                                    </a>
+                                    <div class="dropdown-menu" aria-labelledby="myaccount">
+                                        <a class="dropdown-item" href="my-account.html">Profile</a>
+                                        <a class="dropdown-item" href="{% url 'showcart' %}">My Cart</a>
+                                        <a class="dropdown-item" href="{% url 'orders' %}">My Orders</a>
+                                        <a class="dropdown-item" href="{% url 'passchange' %}">Change Password</a>
+                                        <a class="dropdown-item" href="{% url 'uout' %}">Logout</a>
+                                    </div>
+                                </div>
+                            </li>
+                        </ul>
+                    </div>
+
+                    <!-- offcanvas widget area start -->
+                    <div class="offcanvas-widget-area">
+                        <div class="off-canvas-contact-widget">
+                            <ul>
+                                <li><i class="fa fa-mobile"></i>
+                                    <a href="#">0123456789</a>
+                                </li>
+                                <li><i class="fa fa-envelope-o"></i>
+                                    <a href="#">demo@example.com</a>
+                                </li>
+                            </ul>
+                        </div>
+                        <div class="off-canvas-social-widget">
+                            <a href="#"><i class="fa fa-facebook"></i></a>
+                            <a href="#"><i class="fa fa-twitter"></i></a>
+                            <a href="#"><i class="fa fa-pinterest-p"></i></a>
+                            <a href="#"><i class="fa fa-linkedin"></i></a>
+                            <a href="#"><i class="fa fa-youtube-play"></i></a>
+                        </div>
+                    </div>
+                    <!-- offcanvas widget area end -->
+                </div>
+            </div>
+        </aside>
+        <!-- off-canvas menu end -->
+        <!-- offcanvas mobile menu end -->
+    </header>
+    <!-- end Header Area -->
+    {% endif %}
+
+    {% block body %}
+
+    {% endblock body %}
+
+
+    {% if user.is_authenticated %}
+    <!-- Scroll to top start -->
+    <div class="scroll-top not-visible">
+        <i class="fa fa-angle-up"></i>
+    </div>
+    <!-- Scroll to Top End -->
+
+    <!-- footer area start -->
+    <footer class="footer-widget-area">
+        <div class="footer-top section-padding">
+            <div class="container">
+                <div class="row">
+                    <div class="col-lg-3 col-md-6">
+                        <div class="widget-item">
+                            <div class="widget-title">
+                                <div class="widget-logo">
+                                    <a href="index.html">
+                                        <img src="{% static 'assets/img/logo/logo.png' %}" alt="brand logo">
+                                    </a>
+                                </div>
+                            </div>
+                            <div class="widget-body">
+                                <p>We are a team of designers and developers that create high quality wordpress,
+                                    shopify, Opencart </p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-lg-3 col-md-6">
+                        <div class="widget-item">
+                            <h6 class="widget-title">Contact Us</h6>
+                            <div class="widget-body">
+                                <address class="contact-block">
+                                    <ul>
+                                        <li><i class="pe-7s-home"></i> Your address goes here.</li>
+                                        <li><i class="pe-7s-mail"></i> <a
+                                                href="mailto:demo@plazathemes.com">demo@example.com </a></li>
+                                        <li><i class="pe-7s-call"></i> <a href="tel:0123456789">0123456789</a>
+                                        </li>
+                                    </ul>
+                                </address>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-lg-3 col-md-6">
+                        <div class="widget-item">
+                            <h6 class="widget-title">Information</h6>
+                            <div class="widget-body">
+                                <ul class="info-list">
+                                    <li><a href="#">about us</a></li>
+                                    <li><a href="#">Delivery Information</a></li>
+                                    <li><a href="#">privet policy</a></li>
+                                    <li><a href="#">Terms & Conditions</a></li>
+                                    <li><a href="#">contact us</a></li>
+                                    <li><a href="#">site map</a></li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-lg-3 col-md-6">
+                        <div class="widget-item">
+                            <h6 class="widget-title">Follow Us</h6>
+                            <div class="widget-body social-link">
+                                <a href="#"><i class="fa fa-facebook"></i></a>
+                                <a href="#"><i class="fa fa-twitter"></i></a>
+                                <a href="#"><i class="fa fa-instagram"></i></a>
+                                <a href="#"><i class="fa fa-youtube"></i></a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="row align-items-center mt-20">
+                    <div class="col-md-6">
+                        <div class="newsletter-wrapper">
+                            <h6 class="widget-title-text">Signup for newsletter</h6>
+                            <form class="newsletter-inner" id="mc-form">
+                                <input type="email" class="news-field" id="mc-email" autocomplete="off"
+                                    placeholder="Enter your email address">
+                                <button class="news-btn" id="mc-submit">Subscribe</button>
+                            </form>
+                            <!-- mailchimp-alerts Start -->
+                            <div class="mailchimp-alerts">
+                                <div class="mailchimp-submitting"></div><!-- mailchimp-submitting end -->
+                                <div class="mailchimp-success"></div><!-- mailchimp-success end -->
+                                <div class="mailchimp-error"></div><!-- mailchimp-error end -->
+                            </div>
+                            <!-- mailchimp-alerts end -->
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="footer-payment">
+                            <img src="{% static 'assets/img/payment.png' %}" alt="payment method">
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="footer-bottom">
+            <div class="container">
+                <div class="row">
+                    <div class="col-12">
+                        <div class="copyright-text text-center">
+                            <p class="copyright-text">&copy; 2021 <a href="index.html">Corano</a>. Made with <i
+                                    class="fa fa-heart text-danger"></i> by <a class="" href="https://hasthemes.com/"
+                                    target="_blank">HasThemes</a> </p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </footer>
+    <!-- footer area end -->
+
+
+
+    <!-- offcanvas mini cart start -->
+    <div class="offcanvas-minicart-wrapper">
+        <div class="minicart-inner">
+            <div class="offcanvas-overlay"></div>
+            <div class="minicart-inner-content">
+                <div class="minicart-close">
+                    <i class="pe-7s-close"></i>
+                </div>
+                <div class="minicart-content-box">
+                    <div class="minicart-item-wrapper">
+                        <ul style="height:230px; overflow:hidden; overflow-y:scroll;">
+                            {% for itm in cart_data %}
+
+                            <li class="minicart-item">
+                                <div class="minicart-thumb">
+                                    <a href="product-details.html">
+                                        <img src="{{itm.product.photo.url}}" alt="product">
+                                    </a>
+                                </div>
+                                <div class="minicart-content">
+                                    <h3 class="product-name">
+                                        <a href="product-details.html">{{itm.product.name|truncatewords:4}}</a>
+                                    </h3>
+                                    <p>
+                                        <span class="cart-quantity">{{itm.quantity}}<strong>&times;</strong></span>
+                                        <span class="cart-price">₹ {{itm.product.sell_price}}</span>
+                                        <span class="cart-price">= ₹ {{itm.product_total}}</span>
+                                    </p>
+                                </div>
+                            </li>
+                            {% empty %}
+                            <strong class="text-muted" style="margin-left: 5rem;">Your Cart is Empty</strong>
+                            <img style="height: 5rem;" src="{% static 'assets/img/emptycart.gif' %}"><br>
+                            <a href="{% url 'shop' %}" class="btn btn-sqr mt-2" style="margin-left: 6rem;">Shop Now</a>
+                            {% endfor %}
+                        </ul>
+                    </div>
+
+                    {% if proamount != 0 and final_amt != 0 %}
+
+                    <div class="minicart-pricing-box">
+                        <ul>
+                            <li>
+                                <span>sub-total</span>
+                                <span><strong>₹ {{proamount}}</strong></span>
+                            </li>
+                            <!-- <li>
+                                <span>Eco Tax (-2.00)</span>
+                                <span><strong>$10.00</strong></span>
+                            </li> -->
+                            <!-- <li>
+                                <span>GST (20%)</span>
+                                <span><strong>$60.00</strong></span>
+                            </li> -->
+                            <li>
+                                <span>Shipping Rate</span>
+                                <span><strong>₹ 70.00</strong></span>
+                            </li>
+                            <hr>
+                            <li class="total">
+                                <span>total</span>
+                                <span><strong>₹ {{final_amt}}</strong></span>
+                            </li>
+                        </ul>
+                    </div>
+
+                    {% endif %}
+
+                    {% if proamount != 0 and final_amt != 0 %}
+                    <div class="minicart-button">
+                        <a href="{% url 'showcart' %}"><i class="fa fa-shopping-cart"></i> View Cart</a>
+                        <a href="{% url 'checkout' %}"><i class="fa fa-share"></i> Checkout</a>
+                    </div>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- offcanvas mini cart end -->
+    {% endif %}
+
+
+    <!-- JS
+    ============================================ -->
+
+    <!-- Modernizer JS -->
+    <script src="{% static 'assets/js/vendor/modernizr-3.6.0.min.js' %}"></script>
+    <!-- jQuery JS -->
+    <script src="{% static 'assets/js/vendor/jquery-3.3.1.min.js' %}"></script>
+    <!-- Popper JS -->
+    <script src="{% static 'assets/js/vendor/popper.min.js' %}"></script>
+    <!-- Bootstrap JS -->
+    <script src="{% static 'assets/js/vendor/bootstrap.min.js' %}"></script>
+    <!-- slick Slider JS -->
+    <script src="{% static 'assets/js/plugins/slick.min.js' %}"></script>
+    <!-- Countdown JS -->
+    <script src="{% static 'assets/js/plugins/countdown.min.js' %}"></script>
+    <!-- Nice Select JS -->
+    <script src="{% static 'assets/js/plugins/nice-select.min.js' %}"></script>
+    <!-- jquery UI JS -->
+    <script src="{% static 'assets/js/plugins/jqueryui.min.js' %}"></script>
+    <!-- Image zoom JS -->
+    <script src="{% static 'assets/js/plugins/image-zoom.min.js' %}"></script>
+    <!-- Imagesloaded JS -->
+    <script src="{% static 'assets/js/plugins/imagesloaded.pkgd.min.js' %}"></script>
+    <!-- Instagram feed JS -->
+    <script src="{% static 'assets/js/plugins/instagramfeed.min.js' %}"></script>
+    <!-- mailchimp active js -->
+    <script src="{% static 'assets/js/plugins/ajaxchimp.js' %}"></script>
+    <!-- contact form dynamic js -->
+    <script src="{% static 'assets/js/plugins/ajax-mail.js' %}"></script>
+    <!-- google map api -->
+    <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCfmCVTjRI007pC1Yk2o2d_EhgkjTsFVN8"></script>
+    <!-- google map active js -->
+    <script src="{% static 'assets/js/plugins/google-map.js' %}"></script>
+    <!-- Main JS -->
+    <script src="{% static 'assets/js/main.js' %}"></script>
+    <!-- Razorpay button remove -->
+    <script>
+        $(document).ready(function () {
+          $('.razorpay-payment-button').hide()
+        });
+      </script>
+</body>
+
+
+</html>

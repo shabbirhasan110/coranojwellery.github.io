@@ -1,0 +1,501 @@
+{% extends 'base.html' %}
+{% load static %}
+
+
+{% block title %}
+All-Products |
+{% endblock title %}
+
+
+{% block body %}
+<!-- Breadcrumbs -->
+<div class="breadcrumb-area">
+    <div class="container">
+        <div class="row">
+            <div class="col-12">
+                <div class="breadcrumb-wrap">
+                    <nav aria-label="breadcrumb">
+                        <ul class="breadcrumb">
+                            <li class="breadcrumb-item"><a href="{% url 'shop' %}"><i class="fa fa-home"></i></a></li>
+                            <li class="breadcrumb-item active" aria-current="page">Products</li>
+                        </ul>
+                    </nav>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+<!-- Products Listing -->
+<div class="shop-main-wrapper section-padding">
+    <div class="container">
+        <div class="row">
+            <!-- sidebar area start -->
+            <div class="col-lg-3 order-2 order-lg-1">
+                <aside class="sidebar-wrapper">
+                    <!-- single sidebar start Main categories -->
+                    <div class="sidebar-single">
+                        <h5 class="sidebar-title">Main categories</h5>
+                        <div class="sidebar-body">
+                            <ul class="shop-categories">
+                                {% for mcate in Main_Category %}
+
+                                {% if mcate == 'Men' %}
+                                <li><a href="{% url 'mancatefilter' mcate %}">{{mcate}} <span>({{men_item}})</span></a></li>
+                                {% endif %}
+                                {% if mcate == 'Women' %}
+                                <li><a href="{% url 'mancatefilter' mcate %}">{{mcate}} <span>({{women_item}})</span></a></li>
+                                {% endif %}
+                                {% if mcate == 'Kids' %}
+                                <li><a href="{% url 'mancatefilter' mcate %}">{{mcate}} <span>({{kids_item}})</span></a></li>
+                                {% endif %}
+
+                                {% endfor %}
+                            </ul>
+
+                        </div>
+                    </div>
+                    <!-- single sidebar end Main categories-->
+
+
+                    <!-- single sidebar start Sub categories-->
+                    <div class="sidebar-single">
+                        <h5 class="sidebar-title">Sub categories</h5>
+                        <div class="sidebar-body">
+                            <ul class="shop-categories">
+                                {% for scate in Sub_Category %}
+                                <li><a href="{% url 'subcatefilter' scate %}">{{scate}} <span>(10)</span></a></li>
+
+                                {% endfor %}
+                            </ul>
+
+                        </div>
+                    </div>
+                    <!-- single sidebar end Sub categories -->
+
+                    <!-- single sidebar start Brand -->
+                    <div class="sidebar-single">
+                        <h5 class="sidebar-title">Brand</h5>
+                        <div class="sidebar-body">
+                            <ul class="checkbox-container categories-list">
+
+                                {% for brand in Product_Brand %}
+                                <li>
+                                    <div class="custom-control custom-checkbox">
+                                        <input type="checkbox" class="custom-control-input">
+                                        <label class="custom-control-label">{{brand}}</label>
+                                    </div>
+                                </li>
+                                {% endfor %}
+
+
+
+                            </ul>
+                        </div>
+                    </div>
+                    <!-- single sidebar end Brand-->
+
+                    <!-- single sidebar start -->
+                    <div class="sidebar-single">
+                        <h5 class="sidebar-title">Other Filter</h5>
+                        <form action="" method="GET">
+                            <div>
+                                <select class="nice-select mb-3" name="mcategory" style="display: none">
+                                    {% for mcate in Main_Category %}
+                                    <option>{{mcate}}</option>
+                                    {% endfor %}
+                                </select>
+                            </div>
+                            <div>
+                                <select class="nice-select mb-3" name="scategory" style="display: none">
+                                    {% for scate in Sub_Category %}
+                                    <option>{{scate}}</option>
+                                    {% endfor %}
+                                </select>
+                            </div>
+                            <div>
+                                <select class="nice-select mb-3" name="pmaterial" style="display: none">
+                                    {% for mate in Product_Material %}
+                                    <option>{{mate}}</option>
+                                    {% endfor %}
+                                </select>
+                            </div>
+                            <div class="mt-3">
+                                <input type="text" name="fprice" placeholder="Filter By Price" class="header-search-field">
+                            </div>
+                            <!-- <div class="mt-3">
+                                <input type="text" name="tprice" placeholder="To Price" class="header-search-field">
+                            </div> -->
+                            <div class="mt-3 ">
+                                <span><button style="border-radius: 3rem;" type="submit"
+                                        class="btn btn-sqr">Filter</button></span>
+                                <span><a style="border-radius: 3rem;" href="{% url 'allproducts' %}" type="submit"
+                                        class="btn btn-sqr">View All
+                                        products</a></span>
+                            </div>
+                        </form>
+
+                    </div>
+                    <!-- single sidebar end -->
+
+                    <!-- single sidebar start -->
+                    <div class="sidebar-banner">
+                        <div class="img-container">
+                            <a href="#">
+                                <img src="{% static 'assets/img/banner/sidebar-banner.jpg' %}" alt="">
+                            </a>
+                        </div>
+                    </div>
+                    <!-- single sidebar end -->
+                </aside>
+            </div>
+            <!-- sidebar area end -->
+
+            <!-- shop main wrapper start -->
+            <div class="col-lg-9 order-1 order-lg-2">
+                <div class="shop-product-wrapper">
+                    <!-- shop product top wrap start -->
+                    <div class="shop-top-bar">
+                        <div class="row align-items-center">
+                            <div class="col-lg-5 col-md-6 order-2 order-md-1">
+                                <div class="top-bar-left">
+                                    <div class="product-view-mode">
+                                        <a class="active" href="#" data-target="grid-view" data-toggle="tooltip"
+                                            title="" data-original-title="Grid View"><i class="fa fa-th"></i></a>
+
+                                    </div>
+                                    <div class="product-amount">
+                                        <p>Showing <strong>{{all_products_count}}</strong> Out of
+                                            <strong>{{all_products_count_all}}</strong> Products</p>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-lg-7 col-md-5 order-1 order-md-2 ">
+                                <p>Sort Name : </p>
+                                <form action="" method="GET">
+                                    <div class="row">
+                                        <div class="col-6">
+                                            <input placeholder="Enter Product Name" class="form-control" type="text"
+                                                name="byname">
+                                        </div>
+                                        <div class="col">
+                                            <button type="submit" class="btn btn-sqr"
+                                                style="border-radius: 3rem;">Filter</button>
+                                        </div>
+                                        <div class="col">
+                                            <a href="{% url 'allproducts' %}" class="btn btn-sqr"
+                                                style="border-radius: 3rem;">All</a>
+                                        </div>
+                                    </div>
+
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- shop product top wrap start -->
+
+                    <!-- product item list wrapper start -->
+                    <div class="shop-product-wrap grid-view row mbn-30">
+                        <!-- product single item start -->
+
+                        {% for pro in all_products %}
+                        <div class="col-md-4 col-sm-6">
+                            <!-- product grid start -->
+                            <div class="product-item">
+                                <figure class="product-thumb">
+                                    <a href="{% url 'productdetails' pro.id %}">
+                                        <img class="pri-img" src="{{pro.photo.url}}" alt="product">
+                                        <img class="sec-img" src="{{pro.photo.url}}" alt="product">
+                                    </a>
+                                    <div class="product-badge">
+                                        <div class="product-label new">
+                                            <span>{{pro.discounted_price}}</span>
+                                        </div>
+                                        <div class="product-label discount">
+                                            <span>{{pro.discount}}%</span>
+                                        </div>
+                                    </div>
+                                    <div class="button-group">
+                                        <a href="wishlist.html" data-toggle="tooltip" data-placement="left" title=""
+                                            data-original-title="Add to wishlist"><i class="pe-7s-like"></i></a>
+                                        <a href="compare.html" data-toggle="tooltip" data-placement="left" title=""
+                                            data-original-title="Add to Compare"><i class="pe-7s-refresh-2"></i></a>
+                                        <a href="#" data-toggle="modal" data-target="#quick_view{{pro.id}}"><span
+                                                data-toggle="tooltip" data-placement="left" title=""
+                                                data-original-title="Quick View"><i class="pe-7s-search"></i></span></a>
+                                    </div>
+                                    <div class="cart-hover">
+                                        <button class="btn btn-cart">add to cart</button>
+                                    </div>
+                                </figure>
+                                <div class="product-caption text-center">
+                                    <div class="product-identity">
+                                        <p class="manufacturer-name"><a href="#">For:
+                                                <strong>{{pro.main_cate}}</strong></a>
+                                        </p>
+                                    </div>
+                                    <div class="product-identity">
+                                        <p class="manufacturer-name"><a href="#">Material:
+                                                <strong>{{pro.p_material}}</strong></a>
+                                        </p>
+                                    </div>
+
+                                    <ul class="color-categories">
+
+                                        {% if pro.p_material == 'Diamond' %}
+                                        <li>
+                                            <a class="c-lightblue" href="#" data-toggle="tooltip" data-placement="top"
+                                                title="Diamond"></a>
+                                        </li>
+                                        {% elif pro.p_material == 'Gold' %}
+                                        <li>
+                                            <a class="c-darktan" href="#" data-toggle="tooltip" data-placement="top"
+                                                title="Gold"></a>
+                                        </li>
+                                        {% elif pro.p_material == 'Silver' %}
+                                        <li>
+                                            <a class="c-grey" href="#" data-toggle="tooltip" data-placement="top"
+                                                title="Silver"></a>
+                                        </li>
+                                        {% elif pro.p_material == 'Platinum' %}
+                                        <li>
+                                            <a class="c-light" href="#" data-toggle="tooltip" data-placement="top"
+                                                title="Platinum"></a>
+                                        </li>
+                                        {% elif pro.p_material == 'Pearl' %}
+                                        <li>
+                                            <a class="c-skyblue" href="#" data-toggle="tooltip" data-placement="top"
+                                                title="Pearl"></a>
+                                        </li>
+                                        {% endif %}
+
+
+
+
+                                    </ul>
+                                    <h6 class="product-name">
+                                        <a href="{% url 'productdetails' pro.id %}">{{pro.name|truncatewords:3}}</a>
+                                    </h6>
+                                    <div class="price-box">
+                                        <span class="price-regular">₹ {{pro.sell_price}}</span>
+                                        <span class="price-old"><del>₹ {{pro.og_price}}</del></span>
+                                    </div>
+                                </div>
+                            </div>
+                            <!-- product grid end -->
+                        </div>
+                        {% empty %}
+                        <div style="margin-left: 15rem;">
+                            <strong class="text-muted">You don't have any order</strong>
+                            <img style="height: 5rem;" src="{% static 'assets/img/noorder.jpg' %}"><br>
+                            <a href="{% url 'shop' %}" class="btn btn-sqr mt-2">Shop Now</a>
+                        </div>
+                        {% endfor %}
+                    </div>
+                    <!-- product item list wrapper end -->
+
+                    {% if all_products %}
+                    <!-- start pagination area -->
+                    <div class="paginatoin-area text-center" style="margin-top: 5rem;">
+                        <ul class="pagination-box" style="margin-right: 10rem;" id="ok">
+                            {% if all_products.has_previous %}
+                            <li>
+                                <a class="previous" href="?page={{all_products.previous_page_number}}&ok=#ok"><i
+                                        class="pe-7s-angle-left"></i></a>
+                            </li>
+                            {% endif %}
+
+                            {% for pg in all_products.paginator.page_range %}
+                            {% if all_products.number == pg %}
+                            <li class="active">
+                                <a href="?page={{pg}}&ok=#ok">{{pg}}</a>
+                            </li>
+                            {% else %}
+                            <li>
+                                <a href="?page={{pg}}&ok=#ok">{{pg}}</a>
+                            </li>
+                            {% endif %}
+                            {% endfor %}
+
+                            {% if all_products.has_next %}
+                            <li>
+                                <a class="next" href="?page={{all_products.next_page_number}}&ok=#ok"><i
+                                        class="pe-7s-angle-right"></i></a>
+                            </li>
+                            {% endif %}
+                        </ul>
+                    </div>
+                    <!-- end pagination area -->
+                    {% endif %}
+
+
+
+                </div>
+            </div>
+            <!-- shop main wrapper end -->
+        </div>
+    </div>
+</div>
+
+
+
+
+
+<!-- Quick view modal start -->
+{% for pro in all_products %}
+<div class="modal" id="quick_view{{pro.id}}">
+    <div class="modal-dialog modal-lg modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+            </div>
+            <div class="modal-body">
+                <!-- product details inner end -->
+                <div class="product-details-inner">
+                    <div class="row">
+                        <div class="col-lg-5">
+                            <div class="product-large-slider">
+                                <div class="pro-large-img img-zoom">
+                                    <img src="{{pro.photo.url}}" alt="product-details" />
+                                </div>
+                                <div class="pro-large-img img-zoom">
+                                    <img src="{{pro.photo.url}}" alt="product-details" />
+                                </div>
+                                <div class="pro-large-img img-zoom">
+                                    <img src="{{pro.photo.url}}" alt="product-details" />
+                                </div>
+                                <div class="pro-large-img img-zoom">
+                                    <img src="{{pro.photo.url}}" alt="product-details" />
+                                </div>
+                                <div class="pro-large-img img-zoom">
+                                    <img src="{{pro.photo.url}}" alt="product-details" />
+                                </div>
+                            </div>
+                            <div class="pro-nav slick-row-10 slick-arrow-style">
+                                <div class="pro-nav-thumb">
+                                    <img src="{{pro.photo.url}}" alt="product-details" />
+                                </div>
+                                <div class="pro-nav-thumb">
+                                    <img src="{{pro.photo.url}}" alt="product-details" />
+                                </div>
+                                <div class="pro-nav-thumb">
+                                    <img src="{{pro.photo.url}}" alt="product-details" />
+                                </div>
+                                <div class="pro-nav-thumb">
+                                    <img src="{{pro.photo.url}}" alt="product-details" />
+                                </div>
+                                <div class="pro-nav-thumb">
+                                    <img src="{{pro.photo.url}}" alt="product-details" />
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-lg-7">
+                            <div class="product-details-des">
+                                <div class="manufacturer-name">
+                                    <a href="#">{{pro.p_brand}}</a>
+                                </div>
+                                <h6 class="product-name">
+                                    <a href="{% url 'productdetails' pro.id %}">{{pro.name}}</a>
+                                </h6>
+                                <div class="ratings d-flex">
+                                    <span><i class="fa fa-star-o"></i></span>
+                                    <span><i class="fa fa-star-o"></i></span>
+                                    <span><i class="fa fa-star-o"></i></span>
+                                    <span><i class="fa fa-star-o"></i></span>
+                                    <span><i class="fa fa-star-o"></i></span>
+                                    <div class="pro-review">
+                                        <span>1 Reviews</span>
+                                    </div>
+                                </div>
+                                <div class="price-box">
+                                    <span class="price-regular">₹ {{pro.sell_price}}</span>
+                                    <span class="price-old"><del>₹ {{pro.og_price}}</del></span>
+
+                                </div>
+
+                                <small class="text-danger"> {{pro.discount}}% off</small><br>
+                                Discount: <strong class="text-danger">₹ {{pro.discounted_price}} off</strong>
+
+                                <!-- <h5 class="offer-text"><strong>Hurry up</strong>! offer ends in:</h5>
+                                <div class="product-countdown" data-countdown="2022/02/20"></div>
+                                <div class="availability">
+                                    <i class="fa fa-check-circle"></i>
+                                    <span>200 in stock</span>
+                                </div> -->
+
+                                <div class=" ">
+                                    <div class="product-identity">
+                                        <p class="manufacturer-name"><a href="product-details.html">Material:
+                                                <strong>{{pro.p_material}}</strong></a>
+                                        </p>
+                                    </div>
+                                    <ul class="color-categories ">
+
+                                        {% if pro.p_material == 'Diamond' %}
+                                        <li>
+                                            <a class="c-lightblue" href="#" title="Diamond"></a>
+                                        </li>
+                                        {% elif pro.p_material == 'Gold' %}
+                                        <li>
+                                            <a class="c-darktan" href="#" title="Gold"></a>
+                                        </li>
+                                        {% elif pro.p_material == 'Silver' %}
+                                        <li>
+                                            <a class="c-grey" href="#" title="Silver"></a>
+                                        </li>
+                                        {% elif pro.p_material == 'Platinum' %}
+                                        <li>
+                                            <a class="bg-light" href="#" title="Platinum"></a>
+                                        </li>
+                                        {% endif %}
+
+                                    </ul>
+
+
+                                </div>
+                                <p class="pro-desc">{{pro.p_des}}</p>
+
+                                <div class="quantity-cart-box d-flex align-items-center">
+                                    <label style="margin-bottom: 5rem;"><strong class="mr-2">Size:</strong></label>
+                                    <form action="{% url 'addcart' pro.id %}" method="POST">
+                                        {% csrf_token %}
+                                        <!-- <input type="text" value="{{one_product.id}}" name="pro" id=""> -->
+                                        <select class="nice-select mb-3" name="psize" style="display: none" required>
+
+                                            <option>S</option>
+                                            <option>M</option>
+                                            <option>L</option>
+                                            <option>XL</option>
+
+                                        </select>
+                                        <div class="action_link mb-3 ml-3">
+
+                                            <button type="submit" class="btn btn-cart2">Add to cart</button>
+                                        </div>
+                                    </form>
+                                </div>
+                                <div class="useful-links">
+                                    <a href="#" data-toggle="tooltip" title="Compare"><i
+                                            class="pe-7s-refresh-2"></i>compare</a>
+                                    <a href="#" data-toggle="tooltip" title="Wishlist"><i
+                                            class="pe-7s-like"></i>wishlist</a>
+                                </div>
+                                <div class="like-icon">
+                                    <a class="facebook" href="#"><i class="fa fa-facebook"></i>like</a>
+                                    <a class="twitter" href="#"><i class="fa fa-twitter"></i>tweet</a>
+                                    <a class="pinterest" href="#"><i class="fa fa-pinterest"></i>save</a>
+                                    <a class="google" href="#"><i class="fa fa-google-plus"></i>share</a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div> <!-- product details inner end -->
+            </div>
+        </div>
+    </div>
+</div>
+{% endfor %}
+<!-- Quick view modal end -->
+{% endblock body %}
